@@ -14,16 +14,40 @@ import com.vaadin.flow.server.menu.MenuEntry;
 
 import static com.vaadin.flow.theme.lumo.LumoUtility.*;
 
+/**
+ * {@code MainLayout} define o layout principal da aplicação Vaadin.
+ * <p>
+ * Esta classe estende {@link AppLayout} e é responsável por estruturar
+ * o conteúdo principal da aplicação, incluindo:
+ * <ul>
+ *     <li>O cabeçalho (logo e nome da aplicação)</li>
+ *     <li>A barra lateral de navegação (SideNav)</li>
+ * </ul>
+ * <p>
+ * O layout segue o padrão “Drawer”, com um menu lateral colapsável.
+ */
 @Layout
 public final class MainLayout extends AppLayout {
 
+    /**
+     * Construtor padrão do layout principal.
+     * <p>
+     * Define a secção principal como o “Drawer” e adiciona o cabeçalho
+     * e a barra de navegação lateral.
+     */
     MainLayout() {
         setPrimarySection(Section.DRAWER);
         addToDrawer(createHeader(), new Scroller(createSideNav()));
     }
 
+    /**
+     * Cria o cabeçalho da aplicação, composto por um ícone (logo)
+     * e o nome da aplicação.
+     *
+     * @return um componente {@link Div} representando o cabeçalho.
+     */
     private Div createHeader() {
-        // TODO Replace with real application logo and name
+        // TODO Substituir pelo logo e nome reais da aplicação
         var appLogo = VaadinIcon.CUBES.create();
         appLogo.addClassNames(TextColor.PRIMARY, IconSize.LARGE);
 
@@ -35,6 +59,14 @@ public final class MainLayout extends AppLayout {
         return header;
     }
 
+    /**
+     * Cria o menu lateral de navegação da aplicação (SideNav).
+     * <p>
+     * O conteúdo é gerado dinamicamente com base nas entradas
+     * definidas em {@link MenuConfiguration#getMenuEntries()}.
+     *
+     * @return o componente {@link SideNav} configurado.
+     */
     private SideNav createSideNav() {
         var nav = new SideNav();
         nav.addClassNames(Margin.Horizontal.MEDIUM);
@@ -42,6 +74,13 @@ public final class MainLayout extends AppLayout {
         return nav;
     }
 
+    /**
+     * Cria um item de navegação individual com base nas informações
+     * fornecidas por uma instância de {@link MenuEntry}.
+     *
+     * @param menuEntry objeto que contém o título, caminho e ícone (opcional) do item.
+     * @return um {@link SideNavItem} correspondente à entrada do menu.
+     */
     private SideNavItem createSideNavItem(MenuEntry menuEntry) {
         if (menuEntry.icon() != null) {
             return new SideNavItem(menuEntry.title(), menuEntry.path(), new Icon(menuEntry.icon()));

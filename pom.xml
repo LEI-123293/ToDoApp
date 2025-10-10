@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <!-- Project from https://start.vaadin.com/92b6cb50-3dd1-4dbf-9558-b2b5856bfe72 -->
     <groupId>com.example</groupId>
-    <artifactId>app</artifactId>
+    <artifactId>ToDoApp</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     
