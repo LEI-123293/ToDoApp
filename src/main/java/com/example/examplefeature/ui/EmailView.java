@@ -13,7 +13,7 @@ import org.apache.commons.mail.EmailException;
 
 import com.vaadin.flow.component.html.Main;
 import com.vaadin.flow.router.Menu;
-import com.example.examplefeature.EmailSender;
+import com.example.examplefeature.EmailSendler;
 
 @Route("email")
 @PageTitle("Enviar Email")
@@ -43,7 +43,7 @@ public class EmailView extends Main {
                     return;
                 }
 
-                EmailSender.sendEmail(to, subject, message);
+                EmailSendler.sendEmail(to, subject, message);
                 Notification.show("✅ Email enviado com sucesso!");
 
                 // 🔄 Limpar os campos após envio bem-sucedido

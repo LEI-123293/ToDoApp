@@ -4,13 +4,13 @@ import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 
-public class EmailSender {
+public class EmailSendler {
 
     // ⚙️ Configurações de SMTP — substituir pelos teus dados
     private static final String SMTP_HOST = "smtp.gmail.com";
     private static final int SMTP_PORT = 587;
-    private static final String SMTP_USER = "ricardomilosfortnite5@gmail.com";     // o teu email
-    private static final String SMTP_PASS = "qumg nrpx uris yizk";       // App Password do Gmail
+    private static final String SMTP_USER = "email";     // o teu email
+    private static final String SMTP_PASS = "pass";       // App Password do Gmail
 
     public static void sendEmail(String to, String subject, String message) throws EmailException {
         SimpleEmail email = new SimpleEmail();
