@@ -15,6 +15,12 @@ import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.textfield.EmailField;
+import com.vaadin.flow.component.textfield.TextArea;
+import org.apache.commons.mail.EmailException;
+import com.example.examplefeature.EmailSender;
+
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -51,21 +57,31 @@ class TaskListView extends Main {
         createBtn = new Button("Create", event -> createTask());
         createBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        var dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(getLocale())
+        var dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
+                .withLocale(getLocale())
                 .withZone(ZoneId.systemDefault());
-        var dateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(getLocale());
+        var dateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
+                .withLocale(getLocale());
 
         taskGrid = new Grid<>();
         taskGrid.setItems(query -> taskService.list(toSpringPageRequest(query)).stream());
         taskGrid.addColumn(Task::getDescription).setHeader("Description");
-        taskGrid.addColumn(task -> Optional.ofNullable(task.getDueDate()).map(dateFormatter::format).orElse("Never"))
+        taskGrid.addColumn(task -> Optional.ofNullable(task.getDueDate())
+                        .map(dateFormatter::format)
+                        .orElse("Never"))
                 .setHeader("Due Date");
-        taskGrid.addColumn(task -> dateTimeFormatter.format(task.getCreationDate())).setHeader("Creation Date");
+        taskGrid.addColumn(task -> dateTimeFormatter.format(task.getCreationDate()))
+                .setHeader("Creation Date");
         taskGrid.setSizeFull();
 
         setSizeFull();
-        addClassNames(LumoUtility.BoxSizing.BORDER, LumoUtility.Display.FLEX, LumoUtility.FlexDirection.COLUMN,
-                LumoUtility.Padding.MEDIUM, LumoUtility.Gap.SMALL);
+        addClassNames(
+                LumoUtility.BoxSizing.BORDER,
+                LumoUtility.Display.FLEX,
+                LumoUtility.FlexDirection.COLUMN,
+                LumoUtility.Padding.MEDIUM,
+                LumoUtility.Gap.SMALL
+        );
 
         add(new ViewToolbar("Task List", ViewToolbar.group(description, dueDate, createBtn)));
         add(taskGrid);
@@ -79,5 +95,6 @@ class TaskListView extends Main {
         Notification.show("Task added", 3000, Notification.Position.BOTTOM_END)
                 .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
     }
-
 }
+
+
