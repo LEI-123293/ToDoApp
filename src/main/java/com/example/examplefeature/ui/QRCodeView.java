@@ -14,6 +14,7 @@ import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.data.domain.PageRequest;
+import com.vaadin.flow.component.html.Anchor;
 
 
 import java.io.IOException;
@@ -52,21 +53,33 @@ public class QRCodeView extends Main {
 
     private void showQrDialog(Task task) {
         try {
-            String text = "Task: " + task.getDescription()
-                    + "\nDue: " + (task.getDueDate() != null ? task.getDueDate() : "Never")
-                    + "\nCreated: " + task.getCreationDate();
+            // Gera o link da tarefa (podes mudar o domínio conforme o deploy)
+            String link = "http://localhost:8080/tasks/" + task.getId();
 
-            String qrCodeBase64 = QrCodeGenerator.generateQRCode(text, 250, 250);
+            // Texto adicional (opcional)
+            String text = "Abrir tarefa:\n" + link;
+
+            // Gera o QR code a partir do link
+            String qrCodeBase64 = QrCodeGenerator.generateQRCode(link, 250, 250);
+
             Image qrImage = new Image(qrCodeBase64, "QR Code");
 
             Dialog dialog = new Dialog();
             dialog.add(qrImage);
+
+            // Mostra também o link como texto clicável
+            Anchor anchor = new Anchor(link, "Abrir tarefa no browser");
+            anchor.setTarget("_blank");
+            dialog.add(anchor);
+
             Button close = new Button("Fechar", e -> dialog.close());
             dialog.add(close);
+
             dialog.open();
 
-        } catch (WriterException | IOException e) {
+        } catch (Exception e) {
             Notification.show("Erro ao gerar QR: " + e.getMessage());
         }
     }
+
 }
