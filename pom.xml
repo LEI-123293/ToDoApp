@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <!-- Project from https://start.vaadin.com/92b6cb50-3dd1-4dbf-9558-b2b5856bfe72 -->
     <groupId>com.example</groupId>
-    <artifactId>app</artifactId>
+    <artifactId>ToDoApp</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    
+
     <properties>
-        <java.version>21</java.version>
-        <vaadin.version>24.9.2</vaadin.version>
+        <java.version>23</java.version>
+        <vaadin.version>24.8.0</vaadin.version>
     </properties>
-    
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.5.6</version>
         <relativePath/>
     </parent>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -29,11 +30,10 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    
+
     <dependencies>
         <dependency>
             <groupId>com.vaadin</groupId>
-            <!-- Replace artifactId with vaadin-core to use only free components -->
             <artifactId>vaadin</artifactId>
         </dependency>
         <dependency>
@@ -53,8 +53,13 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.30</version>
+        </dependency>
     </dependencies>
-    
+
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>
         <plugins>
@@ -76,13 +81,12 @@
             </plugin>
         </plugins>
     </build>
-    
+
     <profiles>
         <profile>
             <id>production</id>
             <dependencies>
                 <dependency>
-                    <!-- Exclude development dependencies from production -->
                     <groupId>com.vaadin</groupId>
                     <artifactId>vaadin-core</artifactId>
                     <exclusions>
@@ -112,7 +116,7 @@
             </build>
         </profile>
     </profiles>
-    
+
     <repositories>
         <repository>
             <id>vaadin-directory</id>
@@ -121,6 +125,10 @@
         <repository>
             <id>vaadin-prereleases</id>
             <url>https://maven.vaadin.com/vaadin-prereleases</url>
+        </repository>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
         </repository>
     </repositories>
     <pluginRepositories>
