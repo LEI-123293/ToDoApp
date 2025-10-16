@@ -1,5 +1,6 @@
 package com.example.examplefeature.ui;
 
+import com.example.PDFExporter;
 import com.example.base.ui.component.ViewToolbar;
 import com.example.examplefeature.Task;
 import com.example.examplefeature.TaskService;
@@ -15,12 +16,15 @@ import com.vaadin.flow.router.Menu;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility;
+import org.springframework.data.domain.PageRequest;
 
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.vaadin.flow.spring.data.VaadinSpringDataHelpers.toSpringPageRequest;
 
@@ -35,6 +39,8 @@ class TaskListView extends Main {
     final DatePicker dueDate;
     final Button createBtn;
     final Grid<Task> taskGrid;
+
+    private final DateTimeFormatter dateFormatter;
 
     TaskListView(TaskService taskService) {
         this.taskService = taskService;
@@ -55,8 +61,7 @@ class TaskListView extends Main {
         var dateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
                 .withLocale(getLocale())
                 .withZone(ZoneId.systemDefault());
-        var dateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
-                .withLocale(getLocale());
+        this.dateFormatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(getLocale());
 
         taskGrid = new Grid<>();
         taskGrid.setItems(query -> taskService.list(toSpringPageRequest(query)).stream());
@@ -80,6 +85,13 @@ class TaskListView extends Main {
 
         add(new ViewToolbar("Task List", ViewToolbar.group(description, dueDate, createBtn)));
         add(taskGrid);
+
+        List<String> initialTasks = taskService.list(PageRequest.of(0, 1000)).stream()
+                .map(task -> task.getDescription() +
+                        (task.getDueDate() != null ? " (Due: " + dateFormatter.format(task.getDueDate()) + ")" : ""))
+                .collect(Collectors.toList());
+
+        add(new PDFExporter(initialTasks));
     }
 
     private void createTask() {
@@ -89,6 +101,13 @@ class TaskListView extends Main {
         dueDate.clear();
         Notification.show("Task added", 3000, Notification.Position.BOTTOM_END)
                 .addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+
+        List<String> updatedTasks = taskService.list(PageRequest.of(0, 1000)).stream()
+                .map(task -> task.getDescription() +
+                        (task.getDueDate() != null ? " (Due: " + dateFormatter.format(task.getDueDate()) + ")" : ""))
+                .collect(Collectors.toList());
+
+        replace(getComponentAt(2), new PDFExporter(updatedTasks));
     }
 }
 
