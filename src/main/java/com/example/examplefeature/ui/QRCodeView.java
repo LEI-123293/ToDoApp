@@ -25,12 +25,8 @@ import java.util.Optional;
 @Menu(order = 2, icon = "vaadin:qrcode", title = "QR Codes")
 public class QRCodeView extends Main {
 
-    private final TaskService taskService;
-    private final Grid<Task> taskGrid;
-
     public QRCodeView(TaskService taskService) {
-        this.taskService = taskService;
-        this.taskGrid = new Grid<>(Task.class, false);
+        Grid<Task> taskGrid = new Grid<>(Task.class, false);
 
         // Configuração da tabela
         taskGrid.setItems(query -> taskService.list(PageRequest.of(query.getPage(), query.getPageSize())).stream());
