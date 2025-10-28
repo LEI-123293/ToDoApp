@@ -1,13 +1,3 @@
-#-------------------------------------------------------------------------------#
-#               Qodana analysis is configured by qodana.yaml file               #
-#             https://www.jetbrains.com/help/qodana/qodana-yaml.html            #
-#-------------------------------------------------------------------------------#
-
-# “O ficheiro qodana.yaml define o perfil de inspeção (qodana.starter) e
-#a imagem linter (jetbrains/qodana-jvm:2024.3) usada pela ferramenta
-#Qodana para analisar o código Java. Indica ainda que o projeto usa o
-#JDK 23.”
-
 version: "1.0" #Versão do formato do ficheiro de configuração.
 
 #Specify inspection profile for code analysis
@@ -34,4 +24,6 @@ projectJDK: "23" #(Applied in CI/CD pipeline)
 #  - id: <plugin.id> #(plugin id can be found at https://plugins.jetbrains.com)
 
 #Specify Qodana linter for analysis (Applied in CI/CD pipeline)
-linter: jetbrains/qodana-jvm:2024.3
+linter: "jetbrains/qodana-jvm:2024.3\r"
+include:
+  - name: ThrowablePrintStackTrace

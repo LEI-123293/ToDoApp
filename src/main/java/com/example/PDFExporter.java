@@ -7,12 +7,15 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
 
 public class PDFExporter extends VerticalLayout {
 
+    private static final Logger logger = LoggerFactory.getLogger(PDFExporter.class);
     private final List<String> tasks;
 
     public PDFExporter(List<String> tasks) {
@@ -48,10 +51,10 @@ public class PDFExporter extends VerticalLayout {
             }
 
             document.save("tarefas.pdf");
-            System.out.println("✅ PDF gerado: tarefas.pdf");
+            logger.info("✅ PDF gerado com sucesso: tarefas.pdf");
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Erro ao gerar o PDF de tarefas", e);
         }
     }
 }
